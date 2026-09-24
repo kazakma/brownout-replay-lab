@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+"""commit-msg. Git передаёт сюда ОДИН аргумент: путь к файлу с сообщением.
+Ненулевой код возврата — коммит отменён."""
+import re
+import sys
+
+# --- уже достали, этим и работайте ------------------------------------------
+
+message = open(sys.argv[1], encoding="utf-8").read()
+first_line = message.splitlines()[0] if message.splitlines() else ""
+
+if not re.match(r"^SHOP-[0-9]+\s+\S", first_line):
+    print("Начните сообщение с SHOP-номер и описания", file=sys.stderr)
+    sys.exit(1)
+
+
+sys.exit(0)
