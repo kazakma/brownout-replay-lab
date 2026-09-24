@@ -1,0 +1,1 @@
+SLACK_TOKEN="ghp_0OkE2rXqVn4mT7sLdB9uYcAz1WpQfH3jKgRv"
