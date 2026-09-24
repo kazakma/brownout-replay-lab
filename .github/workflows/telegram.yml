@@ -1,0 +1,21 @@
+name: telegram
+on:
+  push:
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Сообщить в Telegram
+        env:
+          TOKEN:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT:   ${{ secrets.TELEGRAM_CHAT_ID }}
+          REPO:   ${{ github.repository }}
+          ACTOR:  ${{ github.actor }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          TEXT=$(printf 'Событие в %s → %s, автор %s' "$REPO" "$BRANCH" "$ACTOR")
+          curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${CHAT}" \
+            --data-urlencode "text=${TEXT}" \
+            -o r.json -w 'HTTP %{http_code}\n'
+          jq -r '"ok = \(.ok)"' r.json
